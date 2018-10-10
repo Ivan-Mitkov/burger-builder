@@ -1,9 +1,13 @@
 import React from 'react'
-import Button from '../../../UI/Button/Button';
+import classes from './DrawerToggle.module.css';
 
 const drawerToggle=(props)=>{
     return(
-        <Button>{prop.children}</Button>
+        <div className={classes.DrawerToggle} onClick={props.clicked}>
+        <div></div>
+        <div></div>
+        <div></div>
+        </div>
     )
 }
 

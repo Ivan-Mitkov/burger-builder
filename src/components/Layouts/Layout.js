@@ -12,29 +12,26 @@ class Layout extends Component {
     sideDrawerCloseHandler = () => {
         this.setState({ showSideDrawer: false });
     }
-    btnDrawerHandler = () => {
-        console.log('Inside btnDrawerHandler')
-        if(this.state.showSideDrawer){
-            this.setState({ showSideDrawer: false });
-        }else{
-            this.setState({ showSideDrawer: true });
-        }
-        
-    }
+    sideDrawerDrawerHandler = () => {
+        console.log('Inside btnDrawerHandler');
+        this.setState((prevState) => {
+            return { showSideDrawer: !prevState.showSideDrawer };
 
+        });
+    }
     render() {
-        return (
+                return(
             <Aux>
-               
-                <Toolbar />
-                <SideDrawer
-                    open={this.state.showSideDrawer}
-                    closed={this.sideDrawerCloseHandler}>
-                </SideDrawer>
-                <main className={LayoutCss.content}>
-                    {this.props.children}
-                </main>
-            </Aux>
+
+            <Toolbar drawerToggle={this.sideDrawerDrawerHandler} />
+            <SideDrawer
+                open={this.state.showSideDrawer}
+                closed={this.sideDrawerCloseHandler}>
+            </SideDrawer>
+            <main className={LayoutCss.content}>
+                {this.props.children}
+            </main>
+            </Aux >
         )
     }
 
