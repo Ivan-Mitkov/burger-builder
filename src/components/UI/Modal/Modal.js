@@ -1,8 +1,9 @@
 import React from 'react';
+import ModalCss from './Modal.module.css'
 
 const modal=(props)=>{
     return(
-        <div>
+        <div className={ModalCss.Modal}>
             {props.children}
         </div>
     )
