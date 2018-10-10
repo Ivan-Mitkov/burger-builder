@@ -12,8 +12,10 @@ const buildControl = (props) => {
             <button className={BC.More}
                 //receive prop for more from BuildControls
                 onClick={props.more}>More</button>
+            
         </div>
-    )
-}
-
+            
+        )
+    }
+    
 export default buildControl;

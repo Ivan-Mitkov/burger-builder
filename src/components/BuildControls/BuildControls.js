@@ -21,8 +21,11 @@ const buildControls = (props) => {
                     //add prop for more, connect it to type and then should be passed to BuildControl
                     more={() => props.ingredientAdded(bc.type)}
                     less={() => props.ingredientRemoved(bc.type)} 
-                    disabled={props.disabled[bc.type]}/>
+                    disabled={props.disabled[bc.type]}
+                    purchaseable={props.purchaseable}/>
             })}
+            <button className={BCs.OrderButton}
+                    disabled={!props.purchaseable} >Order Now</button>
         </div>
     )
 }
