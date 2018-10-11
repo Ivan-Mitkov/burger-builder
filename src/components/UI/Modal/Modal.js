@@ -7,7 +7,7 @@ class Modal extends Component {
 
     //!!!!So the order wich is child of Modal will not update if it's not visible
     shouldComponentUpdate(nextProps,nextState){
-            return nextProps.show!==this.props.show;            
+            return nextProps.show!==this.props.show||nextProps.children!==this.props.children;            
     }
 
     //this is just for check
