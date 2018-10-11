@@ -8,17 +8,24 @@ const withErrorHandler = (WrappedComponent,axios) => {
         state={
             error:null
         }
-        componentDidMount() {
-            axios.interceptors.request.use(req=>{
+        componentWillMount() {
+            this.reqInterceptor=axios.interceptors.request.use(req=>{
                 this.setState({error:null})
                 //MUST RETURN REQUEST
                 return req;
             })
-            axios.interceptors.response.use(res=>res,err=>{
+            this.resInterceptor=axios.interceptors.response.use(res=>res,err=>{
                 this.setState({error:err})
                 
             })
         }
+        //this interseptors are needed only in concrete class in concrete situation
+        //if interceptors stays it will lead to performance problems by crearing more interceptors
+        componentWillUnmount() {
+            axios.interceptors.response.eject(this.resInterceptor)
+            axios.interceptors.request.eject(this.reqInterceptor)
+        }
+        
         errorConfirmedHandler=()=>{
             this.setState({error:null})
         }

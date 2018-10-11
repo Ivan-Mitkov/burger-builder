@@ -20,19 +20,29 @@ class BurgerBuilder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ingredients: {
-                salad: 0,
-                bacon: 0,
-                cheese: 0,
-                meat: 0
-            },
+            // ingredients: {
+            //     salad: 0,
+            //     bacon: 0,
+            //     cheese: 0,
+            //     meat: 0
+            // },
+            ingredients:null,
             totalPrice: 4,
             purchaseable: false,
             makeDeal: false,
-            loading: false
+            loading: false,
+            error:false
         }
     }
-
+    componentDidMount() {
+        axios.get('https://react-my-burger-abb69.firebaseio.com/orders/ingredients.json')
+            .then(response => {
+                console.log(response);
+                this.setState({ ingredients: response.data })
+            }).catch(err=>{
+                this.setState({error:true})
+            })
+    }
     addIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
         const updatedCount = oldCount + 1;
@@ -84,7 +94,7 @@ class BurgerBuilder extends Component {
     }
     purchaseContinuelHandler = () => {
         // alert('Continue choosing ingredients');
-        this.setState({loading:true});
+        this.setState({ loading: true });
         //for firebase need to add .json
         const order = {
             ingredients: this.state.ingredients,
@@ -102,9 +112,9 @@ class BurgerBuilder extends Component {
         }
         axios.post('/orders.json', order)
             .then(response => {
-               this.setState({loading:false,makeDeal:false})
+                this.setState({ loading: false, makeDeal: false })
             }).catch(err => {
-                this.setState({loading:false,makeDeal:false})
+                this.setState({ loading: false, makeDeal: false })
                 console.log(err)
             });
     }
@@ -116,31 +126,45 @@ class BurgerBuilder extends Component {
             //return true for quantity <=0
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
-        let orderSummary = <OrderSummary ingredients={this.state.ingredients}
+        let orderSummary=null;
+
+        //if initialize state from DB we can't render 
+        //SO
+        let burger =this.state.error?<p>Ingredients can't be loaded</p>:(<Spinner/>)
+        if(this.state.ingredients){
+            burger = (
+                <Aux>
+                    <Burger ingredients={this.state.ingredients} />
+                    <BuildControls
+                        ingredientAdded={this.addIngredientHandler}
+                        ingredientRemoved={this.removeIngredientHandler}
+                        disabled={disabledInfo}
+                        price={this.state.totalPrice}
+                        purchaseable={this.state.purchaseable}
+                        deal={this.makeDealHandler} />
+                </Aux>
+    
+            )
+            orderSummary = <OrderSummary ingredients={this.state.ingredients}
             cancel={this.purchaseCancelHandler}
             continue={this.purchaseContinuelHandler}
             price={this.state.totalPrice}>
         </OrderSummary>
-
-        if(this.state.loading){
-            orderSummary=<Spinner/>
         }
+        
+        if (this.state.loading) {
+            orderSummary = <Spinner />
+        }
+       
         return (
             <Aux>
                 <Modal show={this.state.makeDeal} modalClosed={this.purchaseCancelHandler}>
                     {orderSummary}
                 </Modal>
-                <Burger ingredients={this.state.ingredients} />
-                <BuildControls
-                    ingredientAdded={this.addIngredientHandler}
-                    ingredientRemoved={this.removeIngredientHandler}
-                    disabled={disabledInfo}
-                    price={this.state.totalPrice}
-                    purchaseable={this.state.purchaseable}
-                    deal={this.makeDealHandler} />
+                {burger}
             </Aux>
         )
     }
 }
 
-export default withErrorHandler(BurgerBuilder,axios);
+export default withErrorHandler(BurgerBuilder, axios);
