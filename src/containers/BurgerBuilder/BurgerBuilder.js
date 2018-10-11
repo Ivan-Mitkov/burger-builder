@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Aux from '../../hoc/Hoc';
-
+import axios from '../../axios-order';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/BuildControls/BuildControls';
 import Modal from '../../components/UI//Modal/Modal';
@@ -79,7 +79,27 @@ class BurgerBuilder extends Component {
         this.setState({ makeDeal: false });
     }
     purchaseContinuelHandler = () => {
-        alert('Continue choosing ingredients');
+        // alert('Continue choosing ingredients');
+        //for firebase need to add .json
+        const order ={
+            ingredients:this.state.ingredients,
+            price:this.state.totalPrice,
+            customer:{
+                name:'Ivan',
+                address:{
+                    street:'Pensilvania Avenue 1600',
+                    zipcode:'1000'
+                },
+                email:'boss@us.com'
+            },
+            deliveryMethod:'fastest'
+
+        }
+        axios.post('/orders.json',order)
+        .then(response=>{
+            console.log(axios.baseURL);
+            console.log(response);
+        }).catch(err=>console.log(err, axios.BaseUrl));
     }
     render() {
         const disabledInfo = {
