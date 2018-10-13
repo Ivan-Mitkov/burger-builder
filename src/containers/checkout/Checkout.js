@@ -10,11 +10,23 @@ class Checkout extends Component{
         cheese:1
       } 
     }
+
+    //In App Route is used in two container BurgerBuilder and this one So here we also has access to history
+    checkoutCancelHandler=()=>{
+        this.props.history.goBack();
+    }
+    checkoutContiueHandler=()=>{
+        this.props.history.replace('/checkout/contact-data')
+    }
  render(){
      return(
          <div>
              {/* where do i get my ingredients */}
-           <CheckoutSumary ingredients={this.state.ingredients}></CheckoutSumary>
+           <CheckoutSumary
+            ingredients={this.state.ingredients}
+            checkoutCancel={this.checkoutCancelHandler}
+            checkoutContiue={this.checkoutContiueHandler}
+            ></CheckoutSumary>
          </div>
      )
  }
