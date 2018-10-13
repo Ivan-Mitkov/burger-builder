@@ -5,7 +5,7 @@ import BurgerCss from './Burger.module.css';
 import BurgerIngredient from './BurgerIngredien/BurgerIngredient';
 
 const burger = (props) => {
-    console.log('Burger:',props)
+    // console.log('Burger:',props)
     //sazdavame masiv s keys i dalgina kolkoto sa ingredients
     let transformedIngr = Object.keys(props.ingredients)
         //v gornia masiv sazdava masivi s tolkova ingred kolkoto ima v burgera

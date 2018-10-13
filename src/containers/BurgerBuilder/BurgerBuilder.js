@@ -26,12 +26,12 @@ class BurgerBuilder extends Component {
             //     cheese: 0,
             //     meat: 0
             // },
-            ingredients:null,
+            ingredients: null,
             totalPrice: 4,
             purchaseable: false,
             makeDeal: false,
             loading: false,
-            error:false
+            error: false
         }
     }
     componentDidMount() {
@@ -40,8 +40,8 @@ class BurgerBuilder extends Component {
             .then(response => {
                 // console.log('response',response);
                 this.setState({ ingredients: response.data })
-            }).catch(err=>{
-                this.setState({error:true})
+            }).catch(err => {
+                this.setState({ error: true })
             })
     }
     addIngredientHandler = (type) => {
@@ -118,7 +118,20 @@ class BurgerBuilder extends Component {
         //         this.setState({ loading: false, makeDeal: false })
         //         console.log(err)
         //     });
-        this.props.history.push('/checkout')
+
+        //create array for query
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            //encode ingredients so that they can be used in URL
+            queryParams.push(`${encodeURIComponent(i)}=${encodeURIComponent(this.state.ingredients[i])}`)
+        }
+        //join the array as string with & sign
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?'+queryString
+        })
+        //then queryString it will be send to checkout and parsed there
     }
     render() {
         const disabledInfo = {
@@ -128,12 +141,12 @@ class BurgerBuilder extends Component {
             //return true for quantity <=0
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
-        let orderSummary=null;
+        let orderSummary = null;
 
         //if initialize state from DB we can't render 
         //SO
-        let burger =this.state.error?<p>Ingredients can't be loaded</p>:(<Spinner/>)
-        if(this.state.ingredients){
+        let burger = this.state.error ? <p>Ingredients can't be loaded</p> : (<Spinner />)
+        if (this.state.ingredients) {
             burger = (
                 <Aux>
                     <Burger ingredients={this.state.ingredients} />
@@ -145,19 +158,19 @@ class BurgerBuilder extends Component {
                         purchaseable={this.state.purchaseable}
                         deal={this.makeDealHandler} />
                 </Aux>
-    
+
             )
             orderSummary = <OrderSummary ingredients={this.state.ingredients}
-            cancel={this.purchaseCancelHandler}
-            continue={this.purchaseContinuelHandler}
-            price={this.state.totalPrice}>
-        </OrderSummary>
+                cancel={this.purchaseCancelHandler}
+                continue={this.purchaseContinuelHandler}
+                price={this.state.totalPrice}>
+            </OrderSummary>
         }
-        
+
         if (this.state.loading) {
             orderSummary = <Spinner />
         }
-       
+
         return (
             <Aux>
                 <Modal show={this.state.makeDeal} modalClosed={this.purchaseCancelHandler}>

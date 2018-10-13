@@ -10,7 +10,20 @@ class Checkout extends Component{
         cheese:1
       } 
     }
-
+   
+    //parse searchString in CDM
+    componentDidMount() {        
+        const query=new URLSearchParams(this.props.location.search);
+        const ingredients={};
+        for(let param of query.entries()){
+            // console.log(`${[param[0]]}=${+param[1]}`)
+            ingredients[param[0]]=+param[1]
+        }
+        // console.log("Ingredients",ingredients);
+        this.setState({ingredients:ingredients});
+        
+    }
+    
     //In App Route is used in two container BurgerBuilder and this one So here we also has access to history
     checkoutCancelHandler=()=>{
         this.props.history.goBack();
@@ -19,6 +32,8 @@ class Checkout extends Component{
         this.props.history.replace('/checkout/contact-data')
     }
  render(){
+    // console.log(this.props)
+    // console.log(this.state.ingredients);
      return(
          <div>
              {/* where do i get my ingredients */}
