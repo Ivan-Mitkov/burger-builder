@@ -1,9 +1,11 @@
-import React from 'react'
-import BurgerCss from './Burger.module.css';
+import React from 'react';
+// import {withRouter} from 'react-router-dom';
 
+import BurgerCss from './Burger.module.css';
 import BurgerIngredient from './BurgerIngredien/BurgerIngredient';
 
 const burger = (props) => {
+    console.log('Burger:',props)
     //sazdavame masiv s keys i dalgina kolkoto sa ingredients
     let transformedIngr = Object.keys(props.ingredients)
         //v gornia masiv sazdava masivi s tolkova ingred kolkoto ima v burgera
@@ -34,4 +36,7 @@ const burger = (props) => {
     );
 }
 
+//only BurgerBuilder has prop.history because it's the first direct component in Route
+//so to pass thi props in Burger we can use withRoute
+// export default withRouter(burger);
 export default burger;

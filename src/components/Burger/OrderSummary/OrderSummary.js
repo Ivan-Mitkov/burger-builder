@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
 import Aux from '../../../hoc/Hoc';
-import Button from '../../UI/Button/Button'
+import Button from '../../UI/Button/Button';
+
 
 class OrderSummary extends Component {
     componentWillUpdate = () => {

@@ -35,9 +35,10 @@ class BurgerBuilder extends Component {
         }
     }
     componentDidMount() {
+        console.log(this.props);
         axios.get('https://react-my-burger-abb69.firebaseio.com/orders/ingredients.json')
             .then(response => {
-                console.log(response);
+                // console.log('response',response);
                 this.setState({ ingredients: response.data })
             }).catch(err=>{
                 this.setState({error:true})
@@ -87,36 +88,37 @@ class BurgerBuilder extends Component {
     }
     makeDealHandler = () => {
         this.setState({ makeDeal: true });
-        console.log('Deal: ', this.state.makeDeal);
+        // console.log('Deal: ', this.state.makeDeal);
     }
     purchaseCancelHandler = () => {
         this.setState({ makeDeal: false });
     }
     purchaseContinuelHandler = () => {
-        // alert('Continue choosing ingredients');
-        this.setState({ loading: true });
-        //for firebase need to add .json
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Ivan',
-                address: {
-                    street: 'Pensilvania Avenue 1600',
-                    zipcode: '1000'
-                },
-                email: 'boss@us.com'
-            },
-            deliveryMethod: 'fastest'
+        // // alert('Continue choosing ingredients');
+        // this.setState({ loading: true });
+        // //for firebase need to add .json
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: 'Ivan',
+        //         address: {
+        //             street: 'Pensilvania Avenue 1600',
+        //             zipcode: '1000'
+        //         },
+        //         email: 'boss@us.com'
+        //     },
+        //     deliveryMethod: 'fastest'
 
-        }
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({ loading: false, makeDeal: false })
-            }).catch(err => {
-                this.setState({ loading: false, makeDeal: false })
-                console.log(err)
-            });
+        // }
+        // axios.post('/orders.json', order)
+        //     .then(response => {
+        //         this.setState({ loading: false, makeDeal: false })
+        //     }).catch(err => {
+        //         this.setState({ loading: false, makeDeal: false })
+        //         console.log(err)
+        //     });
+        this.props.history.push('/checkout')
     }
     render() {
         const disabledInfo = {
