@@ -24,11 +24,13 @@ const order = (props) => {
     const price=+props.price;
     return (
 
-        <div className={classes.Order}>
+        <div className={classes.Order}><span>Ingredients: 
             {ingredients.map((ing,index) =>(
-                <ShowOrder key={index} ingr={ing[0]} q={ing[1]}  ></ShowOrder>
+                
+                    <ShowOrder key={index} ingr={ing[0]} q={ing[1]}  ></ShowOrder>
             ) 
             )}
+            </span>
             <p>Price: <strong>USD {price.toFixed(2)}</strong></p>
         </div>
 
