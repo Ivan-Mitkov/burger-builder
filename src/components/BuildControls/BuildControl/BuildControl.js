@@ -5,7 +5,7 @@ import BC from './BuildControl.module.css';
 const buildControl = (props) => {
     return (
         <div className={BC.BuildControl}>
-            <div className={BC.label}>{props.label}</div>
+            <div className={BC.Label}>{props.label}</div>
             <button className={BC.Less}
                 onClick={props.less}
                 disabled={props.disabled}>Less</button>

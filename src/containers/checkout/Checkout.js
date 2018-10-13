@@ -52,7 +52,11 @@ class Checkout extends Component{
             <Route
             path={this.props.match.path+'/contact-data'}
             // in order to send props we use render metho instead component=
-            render={()=>{return <ContactData ingredients={this.state.ingredients} price={this.state.totalPrice}/>}}/>
+            //for using history prop in contact data passing props in render
+            render={(props)=>{return <ContactData
+                                 ingredients={this.state.ingredients} 
+                                 price={this.state.totalPrice}
+                                 {...props}/>}}/>
          </div>
      )
  }
