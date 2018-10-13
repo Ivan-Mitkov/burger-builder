@@ -95,29 +95,7 @@ class BurgerBuilder extends Component {
     }
     purchaseContinuelHandler = () => {
         // // alert('Continue choosing ingredients');
-        // this.setState({ loading: true });
-        // //for firebase need to add .json
-        // const order = {
-        //     ingredients: this.state.ingredients,
-        //     price: this.state.totalPrice,
-        //     customer: {
-        //         name: 'Ivan',
-        //         address: {
-        //             street: 'Pensilvania Avenue 1600',
-        //             zipcode: '1000'
-        //         },
-        //         email: 'boss@us.com'
-        //     },
-        //     deliveryMethod: 'fastest'
-
-        // }
-        // axios.post('/orders.json', order)
-        //     .then(response => {
-        //         this.setState({ loading: false, makeDeal: false })
-        //     }).catch(err => {
-        //         this.setState({ loading: false, makeDeal: false })
-        //         console.log(err)
-        //     });
+        
 
         //create array for query
         const queryParams = [];
@@ -125,6 +103,8 @@ class BurgerBuilder extends Component {
             //encode ingredients so that they can be used in URL
             queryParams.push(`${encodeURIComponent(i)}=${encodeURIComponent(this.state.ingredients[i])}`)
         }
+        //push also total price because it's calculated here
+        queryParams.push('price='+encodeURIComponent(this.state.totalPrice));
         //join the array as string with & sign
         const queryString = queryParams.join('&');
         this.props.history.push({

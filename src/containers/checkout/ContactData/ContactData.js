@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import classes from './ContactData.module.css';
+import axios from '../../../axios-order';
 
 import Button from '../../../components/UI/Button/Button';
 
@@ -10,7 +11,37 @@ class ContactData extends Component{
         address:{
             street:'',
             postcode:''
+        },
+        loading:false
+    }
+    orderHandler=(e)=>{
+        //because we are in form the page is reloaded so we use preventDefault
+        e.preventDefault();
+        console.log(this.props)
+        this.setState({ loading: true });
+        //for firebase need to add .json
+        const order = {
+            ingredients: this.props.ingredients,
+            price: this.props.price,
+            customer: {
+                name: 'Ivan',
+                address: {
+                    street: 'Pensilvania Avenue 1600',
+                    zipcode: '1000'
+                },
+                email: 'boss@us.com'
+            },
+            deliveryMethod: 'fastest'
+
         }
+        console.log('Order: ',order);
+        axios.post('/orders.json', order)
+            .then(response => {
+                this.setState({ loading: false, makeDeal: false })
+            }).catch(err => {
+                this.setState({ loading: false, makeDeal: false })
+                console.log(err)
+            });
     }
     render(){
         return(
@@ -21,11 +52,11 @@ class ContactData extends Component{
                     <input type='email' name='email' placeholder='Your Email'/>
                     <input type='text' name='street' placeholder='Your Street'/>
                     <input type='text' name='postcode' placeholder='Your Postal Code'/>
-                    <Button btnType='Success'>Order</Button>
+                    <Button btnType='Success' clicked={this.orderHandler}>Order</Button>
                 </form>
             </div>
         )
     }
 }
 
-export default ContactData;
+export default ContactData; 
