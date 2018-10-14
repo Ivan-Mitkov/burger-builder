@@ -83,6 +83,25 @@ class ContactData extends Component {
                 console.log(err);
             });
     }
+///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    inputChangedHandler=(event,inputIdentifier)=>{
+        console.log(event.target.value);
+        //copy state SHALLOW
+        const updatedOrderForm={
+            ...this.state.orderForm
+        }
+        //take the coppied form which is now not refering to the original access inputIdentifier 
+        //create a clone to this element 
+        const updatedFormElement={...updatedOrderForm[inputIdentifier]}
+        //and now it's save to update the value 
+        updatedFormElement.value=event.target.value;
+        //now work up save the object wich hold the value
+        updatedOrderForm[inputIdentifier]=updatedFormElement;
+        //set state is ok to use - not mutating because we copy deep the value - we are changing only the value
+        this.setState({orderForm:updatedOrderForm});
+
+    }
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
     render() {
         const elementsArray = [];
         for (let key in this.state.orderForm) {
@@ -97,7 +116,9 @@ class ContactData extends Component {
                     key={elem.id}
                     elementType={elem.config.elementType}
                     elementConfig={elem.config.elementConfig}
-                    value={elem.config.value} />
+                    value={elem.config.value} 
+                    //because we need method identifier we have to use anonymous function instead simple reference
+                    changed={(event)=>this.inputChangedHandler(event,elem.id)}/>
             ))}
             <Button btnType='Success' clicked={this.orderHandler}>Order</Button>
         </form>);
