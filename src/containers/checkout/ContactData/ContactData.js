@@ -53,8 +53,8 @@ class ContactData extends Component {
                 elementType: 'select',
                 elementConfig: {
                     options: [
-                        { value:'fastest',displayValue: 'Fastest' },
-                        { value:'cheapest',displayValue: 'Cheapest' },
+                        { value: 'fastest', displayValue: 'Fastest' },
+                        { value: 'cheapest', displayValue: 'Cheapest' },
                     ]
                 },
                 value: ''
@@ -65,15 +65,27 @@ class ContactData extends Component {
     orderHandler = (e) => {
         //because we are in form the page is reloaded so we use preventDefault
         e.preventDefault();
-        console.log(this.props)
+        // console.log(this.props)
         this.setState({ loading: true });
-        //for firebase need to add .json
+
+        //some data from state doesn't need to be stored in DB 
+        //!!!!!create model for storing data
+        const formData = {}
+        for (let formElemIdentifier in this.state.orderForm) {
+            formData[formElemIdentifier] = this.state.orderForm[formElemIdentifier].value;
+            //creates model to store formData{name:value,street:value ...}
+        }
+
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
+            //create new property to save
+            orderData:formData
 
         }
-        console.log('Order: ', order);
+        //!!!!!
+        //for firebase need to add .json
+        // console.log('Order: ', order);
         axios.post('/orders.json', order)
             .then(response => {
                 this.setState({ loading: false });
@@ -83,25 +95,25 @@ class ContactData extends Component {
                 console.log(err);
             });
     }
-///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    inputChangedHandler=(event,inputIdentifier)=>{
+    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    inputChangedHandler = (event, inputIdentifier) => {
         console.log(event.target.value);
         //copy state SHALLOW
-        const updatedOrderForm={
+        const updatedOrderForm = {
             ...this.state.orderForm
         }
         //take the coppied form which is now not refering to the original access inputIdentifier 
         //create a clone to this element 
-        const updatedFormElement={...updatedOrderForm[inputIdentifier]}
+        const updatedFormElement = { ...updatedOrderForm[inputIdentifier] }
         //and now it's save to update the value 
-        updatedFormElement.value=event.target.value;
+        updatedFormElement.value = event.target.value;
         //now work up save the object wich hold the value
-        updatedOrderForm[inputIdentifier]=updatedFormElement;
+        updatedOrderForm[inputIdentifier] = updatedFormElement;
         //set state is ok to use - not mutating because we copy deep the value - we are changing only the value
-        this.setState({orderForm:updatedOrderForm});
+        this.setState({ orderForm: updatedOrderForm });
 
     }
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
     render() {
         const elementsArray = [];
         for (let key in this.state.orderForm) {
@@ -110,18 +122,19 @@ class ContactData extends Component {
                 config: this.state.orderForm[key]
             });
         }
-        let form = (<form>
-            {elementsArray.map((elem) => (
-                <Input
-                    key={elem.id}
-                    elementType={elem.config.elementType}
-                    elementConfig={elem.config.elementConfig}
-                    value={elem.config.value} 
-                    //because we need method identifier we have to use anonymous function instead simple reference
-                    changed={(event)=>this.inputChangedHandler(event,elem.id)}/>
-            ))}
-            <Button btnType='Success' clicked={this.orderHandler}>Order</Button>
-        </form>);
+        let form = (
+            <form onSubmit={this.orderHandler}>
+                {elementsArray.map((elem) => (
+                    <Input
+                        key={elem.id}
+                        elementType={elem.config.elementType}
+                        elementConfig={elem.config.elementConfig}
+                        value={elem.config.value}
+                        //because we need method identifier we have to use anonymous function instead simple reference
+                        changed={(event) => this.inputChangedHandler(event, elem.id)} />
+                ))}
+                <Button btnType='Success' >Order</Button>
+            </form>);
         if (this.state.loading) {
             form = <Spinner />
         }
