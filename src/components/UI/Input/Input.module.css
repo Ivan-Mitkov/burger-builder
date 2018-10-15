@@ -26,3 +26,17 @@
     outline: none;
     background-color: #ccc;
 }
+
+.Invalid{
+    border:1px sold red;
+    background-color: rgb(247, 188, 181);
+}
+.Invalid:focus{
+    border:1px sold red;
+    background-color: rgb(247, 188, 181);
+}
+
+.ValidationError {
+    color: red;
+    margin: 5px 0;
+} 
