@@ -11,19 +11,10 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "./../../hoc/withErrorHandler/withErrorHandler";
 import * as actionTypes from "../../store/actions";
 
-
 class BurgerBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // ingredients: {
-      //     salad: 0,
-      //     bacon: 0,
-      //     cheese: 0,
-      //     meat: 0
-      // },
-      //   ingredients: null,
-    //   totalPrice: 4,
       purchaseable: false,
       makeDeal: false,
       loading: false,
@@ -42,46 +33,14 @@ class BurgerBuilder extends Component {
     //     this.setState({ error: true });
     //   });
   }
-//   addIngredientHandler = type => {
-//     const oldCount = this.state.ingredients[type];
-//     const updatedCount = oldCount + 1;
-//     const updatedIngredients = {
-//       ...this.state.ingredients
-//     };
-//     updatedIngredients[type] = updatedCount;
-//     //updating prices
-//     const priceAddition = INGREDIENT_PRICES[type];
-//     const oldPrice = this.state.totalPrice;
-//     const newPrice = oldPrice + priceAddition;
-//     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-//     this.updatePurchaseState(updatedIngredients);
-//   };
-//   removeIngredientHandler = type => {
-//     const oldCount = this.state.ingredients[type];
-//     if (oldCount <= 0) {
-//       return;
-//     }
-//     const updatedCount = oldCount - 1;
-//     const updatedIngredients = {
-//       ...this.state.ingredients
-//     };
-//     updatedIngredients[type] = updatedCount;
-//     //updating prices
-//     const priceDeduction = INGREDIENT_PRICES[type];
-//     const oldPrice = this.state.totalPrice;
-//     const newPrice = oldPrice - priceDeduction;
-//     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-//     this.updatePurchaseState(updatedIngredients);
-//   };
+
   updatePurchaseState(ingr) {
     const sum = Object.keys(ingr)
       .map(igKey => {
         return ingr[igKey];
       })
       .reduce((val1, val2) => val1 + val2);
-    // console.log("Sum: ", sum);
-
-    this.setState({ purchaseable: sum > 0 });
+    return sum > 0;
   }
   makeDealHandler = () => {
     this.setState({ makeDeal: true });
@@ -143,7 +102,7 @@ class BurgerBuilder extends Component {
             ingredientRemoved={this.props.onIngredientRemoved}
             disabled={disabledInfo}
             price={this.props.p}
-            purchaseable={this.state.purchaseable}
+            purchaseable={this.updatePurchaseState(this.props.ings)}
             deal={this.makeDealHandler}
           />
         </Aux>
@@ -179,7 +138,7 @@ class BurgerBuilder extends Component {
 const mapStateToProps = state => {
   return {
     ings: state.ingredients,
-    p:state.totalPrice
+    p: state.totalPrice
   };
 };
 
