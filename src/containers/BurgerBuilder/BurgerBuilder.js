@@ -11,12 +11,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "./../../hoc/withErrorHandler/withErrorHandler";
 import * as actionTypes from "../../store/actions";
 
-const INGREDIENT_PRICES = {
-  salad: 0.5,
-  bacon: 0.7,
-  cheese: 0.4,
-  meat: 1.3
-};
+
 class BurgerBuilder extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +23,7 @@ class BurgerBuilder extends Component {
       //     meat: 0
       // },
       //   ingredients: null,
-      totalPrice: 4,
+    //   totalPrice: 4,
       purchaseable: false,
       makeDeal: false,
       loading: false,
@@ -47,37 +42,37 @@ class BurgerBuilder extends Component {
     //     this.setState({ error: true });
     //   });
   }
-  addIngredientHandler = type => {
-    const oldCount = this.state.ingredients[type];
-    const updatedCount = oldCount + 1;
-    const updatedIngredients = {
-      ...this.state.ingredients
-    };
-    updatedIngredients[type] = updatedCount;
-    //updating prices
-    const priceAddition = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice + priceAddition;
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updatePurchaseState(updatedIngredients);
-  };
-  removeIngredientHandler = type => {
-    const oldCount = this.state.ingredients[type];
-    if (oldCount <= 0) {
-      return;
-    }
-    const updatedCount = oldCount - 1;
-    const updatedIngredients = {
-      ...this.state.ingredients
-    };
-    updatedIngredients[type] = updatedCount;
-    //updating prices
-    const priceDeduction = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice - priceDeduction;
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updatePurchaseState(updatedIngredients);
-  };
+//   addIngredientHandler = type => {
+//     const oldCount = this.state.ingredients[type];
+//     const updatedCount = oldCount + 1;
+//     const updatedIngredients = {
+//       ...this.state.ingredients
+//     };
+//     updatedIngredients[type] = updatedCount;
+//     //updating prices
+//     const priceAddition = INGREDIENT_PRICES[type];
+//     const oldPrice = this.state.totalPrice;
+//     const newPrice = oldPrice + priceAddition;
+//     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+//     this.updatePurchaseState(updatedIngredients);
+//   };
+//   removeIngredientHandler = type => {
+//     const oldCount = this.state.ingredients[type];
+//     if (oldCount <= 0) {
+//       return;
+//     }
+//     const updatedCount = oldCount - 1;
+//     const updatedIngredients = {
+//       ...this.state.ingredients
+//     };
+//     updatedIngredients[type] = updatedCount;
+//     //updating prices
+//     const priceDeduction = INGREDIENT_PRICES[type];
+//     const oldPrice = this.state.totalPrice;
+//     const newPrice = oldPrice - priceDeduction;
+//     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+//     this.updatePurchaseState(updatedIngredients);
+//   };
   updatePurchaseState(ingr) {
     const sum = Object.keys(ingr)
       .map(igKey => {
@@ -147,7 +142,7 @@ class BurgerBuilder extends Component {
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             disabled={disabledInfo}
-            price={this.state.totalPrice}
+            price={this.props.p}
             purchaseable={this.state.purchaseable}
             deal={this.makeDealHandler}
           />
@@ -158,7 +153,7 @@ class BurgerBuilder extends Component {
           ingredients={this.props.ings}
           cancel={this.purchaseCancelHandler}
           continue={this.purchaseContinuelHandler}
-          price={this.state.totalPrice}
+          price={this.props.p}
         />
       );
     }
@@ -183,7 +178,8 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
   return {
-    ings: state.ingredients
+    ings: state.ingredients,
+    p:state.totalPrice
   };
 };
 
