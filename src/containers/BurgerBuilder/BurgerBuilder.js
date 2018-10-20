@@ -49,28 +49,9 @@ class BurgerBuilder extends Component {
   purchaseCancelHandler = () => {
     this.setState({ makeDeal: false });
   };
-  purchaseContinuelHandler = () => {
-    // // alert('Continue choosing ingredients');
-
-    //create array for query
-    const queryParams = [];
-    for (let i in this.state.ingredients) {
-      //encode ingredients so that they can be used in URL
-      queryParams.push(
-        `${encodeURIComponent(i)}=${encodeURIComponent(
-          this.state.ingredients[i]
-        )}`
-      );
-    }
-    //push also total price because it's calculated here
-    queryParams.push("price=" + encodeURIComponent(this.state.totalPrice));
-    //join the array as string with & sign
-    const queryString = queryParams.join("&");
-    this.props.history.push({
-      pathname: "/checkout",
-      search: "?" + queryString
-    });
-    //then queryString it will be send to checkout and parsed there
+  purchaseContinuelHandler = () => {  
+    this.props.history.push('/checkout');
+   
   };
   render() {
     const disabledInfo = {
