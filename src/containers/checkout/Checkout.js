@@ -4,14 +4,8 @@ import { connect } from "react-redux";
 
 import CheckoutSumary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "./ContactData/ContactData";
-import * as actions from "../../store/actions/index";
 
 class Checkout extends Component {
-  //for redirect after order
-  componentWillMount() {
-    this.props.onInitPurchase();
-  }
-
   //In App Route is used in two container BurgerBuilder and this one So here we also has access to history
   checkoutCancelHandler = () => {
     this.props.history.goBack();
@@ -57,14 +51,4 @@ const mapStateToProps = state => {
   };
 };
 
-//redicting
-const mapDispatchToProps = dispatch => {
-  return {
-    onInitPurchase: () => dispatch(actions.purchaseInit())
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Checkout);
+export default connect(mapStateToProps)(Checkout);
