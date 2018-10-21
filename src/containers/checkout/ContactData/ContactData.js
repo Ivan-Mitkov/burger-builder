@@ -137,7 +137,7 @@ class ContactData extends Component {
     return isValid;
   }
   inputChangedHandler = (event, inputIdentifier) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     //copy state SHALLOW
     const updatedOrderForm = {
       ...this.state.orderForm
