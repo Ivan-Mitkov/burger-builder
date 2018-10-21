@@ -45,6 +45,7 @@ const reducer = (state = initialState, action) => {
       return{
         ...state,
         ingredients:action.payload,
+        totalPrice:4,
         //in case we have error before
         error:false
       }
