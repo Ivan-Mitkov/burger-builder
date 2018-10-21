@@ -16,22 +16,12 @@ class BurgerBuilder extends Component {
     super(props);
     this.state = {
       purchaseable: false,
-      makeDeal: false,
-      loading: false,
-      error: false
+      makeDeal: false
     };
   }
   componentDidMount() {
     console.log(this.props);
-    axios
-      .get("https://react-my-burger-abb69.firebaseio.com/ingredients.json")
-      .then(response => {
-        // console.log('response',response);
-        this.setState({ ingredients: response.data });
-      })
-      .catch(err => {
-        this.setState({ error: true });
-      });
+    this.props.onInitIngredients();
   }
 
   updatePurchaseState(ingr) {
@@ -49,9 +39,8 @@ class BurgerBuilder extends Component {
   purchaseCancelHandler = () => {
     this.setState({ makeDeal: false });
   };
-  purchaseContinuelHandler = () => {  
-    this.props.history.push('/checkout');
-   
+  purchaseContinuelHandler = () => {
+    this.props.history.push("/checkout");
   };
   render() {
     const disabledInfo = {
@@ -66,7 +55,7 @@ class BurgerBuilder extends Component {
 
     //if initialize state from DB we can't render
     //SO
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>Ingredients can't be loaded</p>
     ) : (
       <Spinner />
@@ -97,11 +86,6 @@ class BurgerBuilder extends Component {
         />
       );
     }
-
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
-
     return (
       <Aux>
         <Modal
@@ -119,7 +103,8 @@ class BurgerBuilder extends Component {
 const mapStateToProps = state => {
   return {
     ings: state.ingredients,
-    p: state.totalPrice
+    p: state.totalPrice,
+    error: state.error
   };
 };
 
@@ -129,7 +114,8 @@ const mapDispatchToProps = dispatch => {
     onIngredientAdded: ingName =>
       dispatch(burgerBuilderActions.addIngredient(ingName)),
     onIngredientRemoved: ingName =>
-      dispatch(burgerBuilderActions.removeIngredient(ingName))
+      dispatch(burgerBuilderActions.removeIngredient(ingName)),
+    onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
   };
 };
 export default connect(
