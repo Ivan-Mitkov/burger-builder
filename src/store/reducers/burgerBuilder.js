@@ -1,4 +1,4 @@
-import * as actionTypes from "./actions";
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   //we are still not using DB so we need some initial ingredients

@@ -9,7 +9,7 @@ import Modal from "../../components/UI//Modal/Modal";
 import OrderSummary from "./../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "./../../hoc/withErrorHandler/withErrorHandler";
-import * as actionTypes from "../../store/actions";
+import * as burgerBuilderActions from "../../store/actions/index";
 
 class BurgerBuilder extends Component {
   constructor(props) {
@@ -23,15 +23,15 @@ class BurgerBuilder extends Component {
   }
   componentDidMount() {
     console.log(this.props);
-    // axios
-    //   .get("https://react-my-burger-abb69.firebaseio.com/ingredients.json")
-    //   .then(response => {
-    //     // console.log('response',response);
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch(err => {
-    //     this.setState({ error: true });
-    //   });
+    axios
+      .get("https://react-my-burger-abb69.firebaseio.com/ingredients.json")
+      .then(response => {
+        // console.log('response',response);
+        this.setState({ ingredients: response.data });
+      })
+      .catch(err => {
+        this.setState({ error: true });
+      });
   }
 
   updatePurchaseState(ingr) {
@@ -127,9 +127,9 @@ const mapDispatchToProps = dispatch => {
   return {
     //ingredientName the name in payload from reducer
     onIngredientAdded: ingName =>
-      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }),
+      dispatch(burgerBuilderActions.addIngredient(ingName)),
     onIngredientRemoved: ingName =>
-      dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName })
+      dispatch(burgerBuilderActions.removeIngredient(ingName))
   };
 };
 export default connect(
