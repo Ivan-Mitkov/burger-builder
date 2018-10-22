@@ -82,17 +82,19 @@ class Auth extends Component {
         touched: true
       }
     };
-    this.setState((state, props) => {
-      return { controls: updatedControls };
-    });
+    this.setState({ controls: updatedControls });
+
+    // console.log('Email State:',this.state.controls.email.value)
+    // console.log('Password State:',this.state.controls.password.value)
   };
   submitHandler = event => {
     //prevent reloading of the page
     event.preventDefault();
-    this.props.onAuth(
-      this.state.controls.email.value,
-      this.state.controls.password.value
-    );
+    const pass = this.state.controls.password.value;
+    const em = this.state.controls.email.value;
+    console.log("em:", em);
+    console.log("Pass:", pass);
+    this.props.onAuth(em, pass);
   };
   render() {
     //loop through state object
@@ -130,7 +132,7 @@ class Auth extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (email, password) => dispatch(actions.auth((email, password)))
+    onAuth: (email, password) => dispatch(actions.auth(email, password))
   };
 };
 
