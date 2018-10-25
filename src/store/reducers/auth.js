@@ -18,7 +18,7 @@ const reducer = (state = initialState, actions) => {
       return {
         ...state,
         error: actions.error,
-        loading:false
+        loading: false
       };
     case actionTypes.AUTH_SUCCESS:
       return {
@@ -27,6 +27,12 @@ const reducer = (state = initialState, actions) => {
         userId: actions.userId,
         error: null,
         loading: false
+      };
+    case actionTypes.AUTH_LOGOUT:
+      return {
+        ...state,
+        token: null,
+        userId: null
       };
     default:
       return state;

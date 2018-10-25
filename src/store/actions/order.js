@@ -21,12 +21,13 @@ export const purchaseBurgerStart = () => {
     type: actionTypes.PURCHASE_BURGER_START
   };
 };
-
-export const purchaseBurger = orderData => {
+//token for auth send token from container contact data
+export const purchaseBurger = (orderData, token) => {
   return dispatch => {
     dispatch(purchaseBurgerStart());
     axios
-      .post("/orders.json", orderData)
+    //add token for auth
+      .post("/orders.json?auth=" + token, orderData)
       .then(response => {
         console.log("orders response: ", response.data);
         //id is on response data name
@@ -62,11 +63,12 @@ export const fetchOrdersFailed = err => {
   };
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = token => {
   return dispatch => {
     dispatch(fetchOrdersInit());
     axios
-      .get("/orders.json")
+      //add token for authentication in order auth user to be able to use this ?auth=
+      .get("/orders.json?auth=" + token)
       .then(res => {
         console.log("Loading orders:", res.data);
         const fetchedData = [];
@@ -83,7 +85,7 @@ export const fetchOrders = () => {
         // this.setState({ loading: false, orders: fetchedData });
       })
       .catch(err => {
-        dispatch(fetchOrdersFailed(err))
+        dispatch(fetchOrdersFailed(err));
         // this.setState({ loading: false });
       });
   };

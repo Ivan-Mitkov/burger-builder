@@ -134,7 +134,7 @@ class Auth extends Component {
 
     //add error message
     let errorMessage=null;
-    console.log('error: ',this.props.error);
+    // console.log('error: ',this.props.error);
     if(this.props.error){
       errorMessage=(
         //.message is from firebase

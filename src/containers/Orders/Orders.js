@@ -32,7 +32,9 @@ class Orders extends Component {
     // .catch(err=>{
     //     this.setState({loading:false});
     // })
-    this.props.onFetchOrders();
+
+    //pass token for auth
+    this.props.onFetchOrders(this.props.token);
   }
 
   render() {
@@ -52,12 +54,15 @@ class Orders extends Component {
 const mapStateToProps = state => {
   return {
     orders: state.order.orders,
-    loading: state.order.loading
+    loading: state.order.loading,
+    //get token for auth
+    token:state.auth.token
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchOrders: () => dispatch(actions.fetchOrders())
+    //pass token for auth
+    onFetchOrders: (token) => dispatch(actions.fetchOrders(token))
   };
 };
 export default connect(
