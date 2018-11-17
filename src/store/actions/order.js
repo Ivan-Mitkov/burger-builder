@@ -63,12 +63,13 @@ export const fetchOrdersFailed = err => {
   };
 };
 
-export const fetchOrders = token => {
+export const fetchOrders = (token,userId) => {
   return dispatch => {
     dispatch(fetchOrdersInit());
+    const queryParams=`?auth=${token}&orderBy="userId"&equalTo="${userId}"`
     axios
       //add token for authentication in order auth user to be able to use this ?auth=
-      .get("/orders.json?auth=" + token)
+      .get("/orders.json" + queryParams)
       .then(res => {
         console.log("Loading orders:", res.data);
         const fetchedData = [];

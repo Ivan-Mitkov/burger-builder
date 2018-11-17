@@ -8,33 +8,10 @@ import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
 
 class Orders extends Component {
-  // state={
-  //     orders:[],
-  //     loading:true
-  // }
-  componentDidMount() {
-    // axios.get('/orders.json')
-    // .then(res=>{
-    //     console.log("Loading orders:",res.data);
-    //     const fetchedData=[];
-    //     for(let key in res.data){
-    //         if(key!=='ingredients'){
-    //             fetchedData.push({
-    //                 ...res.data[key],
-    //                 id:key
-    //             })
-    //         }
-
-    //     }
-    //     console.log('fetched data:',fetchedData);
-    //     this.setState({loading:false, orders:fetchedData})
-    // })
-    // .catch(err=>{
-    //     this.setState({loading:false});
-    // })
-
+  
+  componentDidMount() {   
     //pass token for auth
-    this.props.onFetchOrders(this.props.token);
+    this.props.onFetchOrders(this.props.token,this.props.userId);
   }
 
   render() {
@@ -56,13 +33,14 @@ const mapStateToProps = state => {
     orders: state.order.orders,
     loading: state.order.loading,
     //get token for auth
-    token:state.auth.token
+    token:state.auth.token,
+    userId:state.auth.userId
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     //pass token for auth
-    onFetchOrders: (token) => dispatch(actions.fetchOrders(token))
+    onFetchOrders: (token,userId) => dispatch(actions.fetchOrders(token,userId))
   };
 };
 export default connect(

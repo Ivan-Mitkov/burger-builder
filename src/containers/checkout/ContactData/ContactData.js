@@ -116,7 +116,8 @@ class ContactData extends Component {
       ingredients: this.props.ings,
       price: this.props.p,
       //create new property to save
-      orderData: formData
+      orderData: formData,
+      userId:this.props.userId
     };
     //dispatch onOrderBurger so add token from props for auth
     this.props.onOrderBurger(order,this.props.token)
@@ -235,7 +236,8 @@ const mapStateToProps = state => {
     p: state.burgerBuilder.totalPrice,
     ings: state.burgerBuilder.ingredients,
     loading:state.order.loading,
-    token:state.auth.token
+    token:state.auth.token,
+    userId:state.auth.userId
   };
 };
 
