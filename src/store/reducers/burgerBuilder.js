@@ -10,7 +10,9 @@ const initialState = {
   // },
   ingredients: null,
   totalPrice: 4,
-  error: false
+  error: false,
+  //storing info for building burger for sign up after making burger
+  building: false
 };
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -30,7 +32,8 @@ const reducer = (state = initialState, action) => {
           //get old number add 1 and assign to this property
           [action.ingredientName]: state.ingredients[action.ingredientName] + 1
         },
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+        building: true
       };
     case actionTypes.REMOVE_INGREDIENT:
       return {
@@ -39,22 +42,24 @@ const reducer = (state = initialState, action) => {
           ...state.ingredients,
           [action.ingredientName]: state.ingredients[action.ingredientName] - 1
         },
-        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+        building: true
       };
     case actionTypes.SET_INGREDIENTS:
-      return{
+      return {
         ...state,
-        ingredients:action.payload,
-        totalPrice:4,
+        ingredients: action.payload,
+        totalPrice: 4,
         //in case we have error before
-        error:false
-      }
+        error: false,
+        building:false
+      };
 
     case actionTypes.FETCH_ING_FAILED:
-    return{
-      ...state,
-      error:true
-    }
+      return {
+        ...state,
+        error: true
+      };
     default:
       return state;
   }
